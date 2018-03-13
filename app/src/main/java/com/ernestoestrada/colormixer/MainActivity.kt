@@ -34,29 +34,54 @@ class MainActivity : AppCompatActivity() {
         mixer.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 var progressColor:IntArray = intArrayOf(0,0,0)
+                var firstColor:IntArray = intArrayOf(0,0,0)
+                var secondColor:IntArray = intArrayOf(0,0,0)
+
                 val maxColor = color1
                 val minColor = color2
-                when (progress) {
-                    100 -> {
-                        colorView.setBackgroundColor(Color.rgb(maxColor[0], maxColor[1], maxColor[2]))
-                        colorView1.setBackgroundColor(Color.rgb(maxColor[0], maxColor[1], maxColor[2]))
-                    }
-                    0 -> {
-                        colorView.setBackgroundColor(Color.rgb(minColor[0], minColor[1], minColor[2]))
-                        colorView1.setBackgroundColor(Color.rgb(minColor[0], minColor[1], minColor[2]))
-                    }
-                    else -> {
-                        progressColor[0] = (maxColor[0] + minColor[0]) * progress
-                        progressColor[1] = (maxColor[1] + minColor[1]) * progress
-                        progressColor[2] = (maxColor[2] + minColor[2]) * progress
-
-                        colorView.setBackgroundColor(Color.rgb(progressColor[0], progressColor[1], progressColor[2]))
-                        colorView1.setBackgroundColor(Color.rgb(progressColor[0], progressColor[1], progressColor[2]))
-
-                    }
+                if (progress == 100){
+                    colorView.setBackgroundColor(Color.rgb(maxColor[0], maxColor[1], maxColor[2]))
+                    colorView1.setBackgroundColor(Color.rgb(maxColor[0], maxColor[1], maxColor[2]))
                 }
-                Log.i("Progress", "")
-                //seekBarProgess()
+                else if (progress == 0){
+                    colorView.setBackgroundColor(Color.rgb(minColor[0], minColor[1], minColor[2]))
+                    colorView1.setBackgroundColor(Color.rgb(minColor[0], minColor[1], minColor[2]))
+                }
+
+                else if (progress < 50 ) {
+                    Log.i("Progress", "${progress}")
+                    secondColor[0] = minColor[0] * progress
+                    secondColor[1] = minColor[1] * progress
+                    secondColor[2] = minColor[2] * progress
+
+                    firstColor[0] = maxColor[0] * (100 - progress)
+                    firstColor[1] = maxColor[1] * (100 - progress)
+                    firstColor[2] = maxColor[2] * (100 - progress)
+
+                    progressColor[0] = firstColor[0] + secondColor[0]
+                    progressColor[1] = firstColor[1] + secondColor[1]
+                    progressColor[2] = firstColor[2] + secondColor[2]
+
+                    colorView.setBackgroundColor(Color.rgb(progressColor[0], progressColor[1], progressColor[2]))
+                    colorView1.setBackgroundColor(Color.rgb(progressColor[0], progressColor[1], progressColor[2]))
+                }
+                else if (progress > 50 ) {
+                    Log.i("Progress", "${progress}")
+                    secondColor[0] = minColor[0] * progress
+                    secondColor[1] = minColor[1] * progress
+                    secondColor[2] = minColor[2] * progress
+
+                    firstColor[0] = maxColor[0] * (100 - progress)
+                    firstColor[1] = maxColor[1] * (100 - progress)
+                    firstColor[2] = maxColor[2] * (100 - progress)
+
+                    progressColor[0] = firstColor[0] + secondColor[0]
+                    progressColor[1] = firstColor[1] + secondColor[1]
+                    progressColor[2] = firstColor[2] + secondColor[2]
+
+                    colorView.setBackgroundColor(Color.rgb(progressColor[0], progressColor[1], progressColor[2]))
+                    colorView1.setBackgroundColor(Color.rgb(progressColor[0], progressColor[1], progressColor[2]))
+                }
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {}
